@@ -2,12 +2,12 @@
 Automated with the python-Selenium
 This project is based on the automation where i've worked on the specific like XPath , css selector and normal apart form these we have used wait method in which ,i used implicit function.
 
-To run this ->
-Install Python
-Install Selenium
-Import packages
-and configure your browser in which you want to automate it.
-then run it.
+**To run this ->**
+1. Install Python
+2. Install Selenium
+3. Import packages
+4. and configure your browser in which you want to automate it.
+5. then run it.
 
 For more visit this and make it your own : https://katalon-demo-cura.herokuapp.com/
 
