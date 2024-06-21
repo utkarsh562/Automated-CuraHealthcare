@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/utkarsh562/Automated-CuraHealthcare.git'
+                checkout scm
             }
         }
         stage('Setup Python Environment') {
@@ -22,20 +22,24 @@ pipeline {
         }
         stage('Install WebDriver') {
             steps {
-                sh '''
-                # Download and install ChromeDriver
-                CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`
-                wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-                unzip chromedriver_linux64.zip
-                sudo mv chromedriver /usr/local/bin/
-                rm chromedriver_linux64.zip
-
-                # Install Google Chrome
-                wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-                sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
-                sudo apt-get update
-                sudo apt-get install -y google-chrome-stable
-                '''
+                script {
+                    // Download and install ChromeDriver
+                    def CHROMEDRIVER_VERSION = sh(script: 'curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE', returnStdout: true).trim()
+                    sh """
+                    wget -N https://chromedriver.storage.googleapis.com/\${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
+                    unzip chromedriver_linux64.zip
+                    sudo mv chromedriver /usr/local/bin/
+                    rm chromedriver_linux64.zip
+                    """
+                    
+                    // Optionally, install Google Chrome
+                    sh '''
+                    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+                    sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+                    sudo apt-get update
+                    sudo apt-get install -y google-chrome-stable
+                    '''
+                }
             }
         }
         stage('Run Tests') {
