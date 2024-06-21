@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-repo.git'
+                git 'https://github.com/utkarsh562/Automated-CuraHealthcare.git'
             }
         }
         stage('Setup Python Environment') {
